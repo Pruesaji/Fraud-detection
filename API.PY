@@ -5,7 +5,7 @@ from typing import List
 from joblib import load
 
 class FraudDetectionRequest(BaseModel):
-    data: List[conlist(float)]
+    data: List[List(float)]
 
 
 @asynccontextmanager
