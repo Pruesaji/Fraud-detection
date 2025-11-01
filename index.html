@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<!-- HERE -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+</head>
+<body>
+    <div style="padding: 20px;">
+      <form class="row g-3">
+        <div class="col-md-6">
+          <label for="operating_expense_to_sales" class="form-label"
+            >Operating Expense to Sales</label
+          >
+          <input
+            type="number"
+            class="form-control form-control-sm"
+            id="operating_expense_to_sales"
+            placeholder="Enter value"
+          />
+        </div>
+
+        <div class="col-md-6">
+          <label for="pretax_profit_margin" class="form-label"
+            >Pretax Profit Margin</label
+          >
+          <input
+            type="number"
+            class="form-control form-control-sm"
+            id="pretax_profit_margin"
+            placeholder="Enter value"
+          />
+        </div>
+
+        <div class="col-md-6">
+          <label for="liabilities_percentage" class="form-label"
+            >Total Liabilities (% of Total Assets)</label
+          >
+          <input
+            type="number"
+            class="form-control form-control-sm"
+            id="liabilities_percentage"
+            placeholder="Enter value"
+          />
+        </div>
+
+        <div class="col-md-6">
+          <label for="roa" class="form-label">Return on Assets (ROA)</label>
+          <input
+            type="number"
+            class="form-control form-control-sm"
+            id="roa"
+            placeholder="Enter value"
+          />
+        </div>
+
+        <div class="col-md-6">
+          <label for="net_margin" class="form-label">Net Margin</label>
+          <input
+            type="number"
+            class="form-control form-control-sm"
+            id="net_margin"
+            placeholder="Enter value"
+          />
+        </div>
+
+        <div class="col-md-6">
+          <label for="sg_and_a" class="form-label">SG&amp;A to Revenue</label>
+          <input
+            type="number"
+            class="form-control form-control-sm"
+            id="sg_and_a"
+            placeholder="Enter value"
+          />
+        </div>
+
+        <div class="col-md-6">
+          <label for="quick_ratio" class="form-label">Quick Ratio</label>
+          <input
+            type="number"
+            class="form-control form-control-sm"
+            id="quick_ratio"
+            placeholder="Enter value"
+          />
+        </div>
+
+        <div class="col-md-6">
+          <label for="inventories_percentage" class="form-label"
+            >Inventories (% of Total Assets)</label
+          >
+          <input
+            type="number"
+            class="form-control form-control-sm"
+            id="inventories_percentage"
+            placeholder="Enter value"
+          />
+        </div>
+
+        <div class="col-md-6">
+          <label for="ln_total_assets" class="form-label"
+            >Logarithm of Total Assets</label
+          >
+          <input
+            type="number"
+            class="form-control form-control-sm"
+            id="ln_total_assets"
+            placeholder="Enter value"
+          />
+        </div>
+
+        <div class="col-md-6">
+          <label for="current_ratio" class="form-label">Current Ratio</label>
+          <input
+            type="number"
+            class="form-control form-control-sm"
+            id="current_ratio"
+            placeholder="Enter value"
+          />
+        </div>
+
+        <div class="col-12 text-end mt-3">
+          <input type="button" class="btn btn-primary btn-sm" onclick="onSubmit()" value="Submit">
+        </div>
+      </form>
+    </div>
+    <div id="result"></div>
+
+</body>
+<script>    
+
+const onSubmit = () => {
+         let input = [
+        $("#operating_expense_to_sales").val(),
+        $("#pretax_profit_margin").val(),
+        $("#liabilities_percentage").val(),
+        $("#roa").val(),
+        $("#net_margin").val(),
+        $("#sg_and_a").val(),
+        $("#quick_ratio").val(),
+        $("#inventories_percentage").val(),
+        $("#ln_total_assets").val(),
+        $("#current_ratio").val()
+        ].map(Number);
+
+    console.log(input)
+        $.ajax({
+        url: "http://127.0.0.1:8000/predict",
+        type: 'POST', 
+        contentType: 'application/json',
+        data: JSON.stringify({"data": [input]}), // 👈 Crucial: Convert the JS object to a JSON string
+        success: (data) => {
+            console.log("POST Success:", data);
+            $("#result").text("Prediction: " + data.predictions);
+        },
+        error: (xhr, status, error) => {
+            console.error("POST Error:", status, error, xhr.responseText);
+        }
+    });
+    }
+
+$(document).ready(() => {
+
+    $.get("http://127.0.0.1:8000", (data) => {
+        console.log(data);
+    })
+})
+</script>
+</html>

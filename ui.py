@@ -24,7 +24,7 @@ class PredictApp:
 
         self.send_btn = tk.Button(root, text="Send to API", command=self.send_data)
         self.send_btn.pack(pady=10)
-
+        
     def add_row(self):
         text = self.entry.get()
         try:
